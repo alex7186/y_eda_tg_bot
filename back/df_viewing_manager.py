@@ -5,18 +5,14 @@ def make_md_text(input_df: pd.DataFrame) -> str:
 
     text = ""
 
-    for i, row in input_df.iterrows():
-
-        row_distance = int(row["distance"] * 1000)
-        if row_distance == 0:
-            continue
+    for _, row in input_df.iterrows():
 
         # printing address
-        text = text + "{} {} п{} ({}м)".format(
+        text = text + "{} {} п{}".format(
             row["address_street"],
             row["address_house"],
             row["address_entrance"],
-            row_distance,
+
         )
 
         # printing domophone codes
