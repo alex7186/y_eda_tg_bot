@@ -1,0 +1,5 @@
+
+sudo -i -u postgres
+\conninfo
+createdb y_eda_db
+psql -d y_eda_db
