@@ -14,3 +14,17 @@
 2023-08-01 02:08:57 747558089 sended successfully
 2023-08-01 02:42:56 Stop polling...
 2023-08-01 02:42:56 Goodbye!
+2023-08-10 22:20:33 Bot: Домофонов.нет [@my_dialog_analyzer_bot]
+2023-08-10 22:20:33 Updates were skipped successfully.
+2023-08-10 22:20:33 Start polling.
+2023-08-10 22:20:57 747558089 searching 55.824382 37.601893
+2023-08-10 22:20:58 747558089 sended successfully
+2023-08-10 22:21:22 Stop polling...
+2023-08-10 22:21:22 Goodbye!
+2023-08-10 23:30:19 Bot: Домофонов.нет [@my_dialog_analyzer_bot]
+2023-08-10 23:30:20 Updates were skipped successfully.
+2023-08-10 23:30:20 Start polling.
+2023-08-10 23:30:39 747558089 searching 55.824382 37.601893
+2023-08-10 23:30:39 747558089 sended successfully
+2023-08-10 23:31:37 Stop polling...
+2023-08-10 23:31:37 Goodbye!

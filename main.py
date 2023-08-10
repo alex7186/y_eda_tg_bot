@@ -4,13 +4,23 @@ from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor, exceptions
 
+from back.config_manager import get_config
 from back.log_manager import log_init, mprint
-from back.postgresql_manager import calculate_distance
+
 from back.df_viewing_manager import make_md_text
 
 
 BASE_DIR = os.getcwd()
 TG_TOKEN = "5096267040:AAFa_d_YJHhVCxhw44xUlEqG_ypqTUSMcsg"
+
+CONFIG = get_config(BASE_DIR)
+if CONFIG["data_source_type"] == 'db_file':
+    from back.sqlite3_manager import sqlite3_manager_init, calculate_distance
+    sqlite3_manager_init(BASE_DIR)
+
+elif CONFIG["data_source_type"] == 'postgresql':
+    from back.postgresql_manager import calculate_distance
+
 
 log_init(os.path.join(BASE_DIR, "misc", "log.txt"))
 

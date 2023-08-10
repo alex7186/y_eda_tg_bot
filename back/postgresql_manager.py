@@ -1,5 +1,5 @@
 import psycopg2
-import pandas as pd
+from pandas import DataFrame
 
 
 POSTGRESQL_CONN = psycopg2.connect(
@@ -9,7 +9,7 @@ POSTGRESQL_CONN = psycopg2.connect(
 # POSTGRESQL_CONN.autocommit = True
 
 
-def calculate_distance(lat: float, lon: float, result_count: int = 10) -> pd.DataFrame:
+def calculate_distance(lat: float, lon: float, result_count: int = 10) -> DataFrame:
     global POSTGRESQL_CONN
 
     with POSTGRESQL_CONN.cursor() as cursor:
@@ -38,7 +38,7 @@ def calculate_distance(lat: float, lon: float, result_count: int = 10) -> pd.Dat
             )
         )
 
-        return pd.DataFrame(
+        return DataFrame(
             cursor.fetchall(),
             columns=(
                 "address_city",
