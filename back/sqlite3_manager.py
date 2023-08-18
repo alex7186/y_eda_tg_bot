@@ -5,9 +5,13 @@ from math import pi, sin, cos, atan2
 
 SQLITE3_CONECTION = None
 
-def sqlite3_manager_init(BASE_DIR):
+def sqlite3_manager_init(BASE_DIR=None, full_file_path=None):
     global SQLITE3_CONECTION
-    SQLITE3_CONECTION = sqlite3.connect(os.path.join(BASE_DIR, 'data', 'final_doorcodes.db'))   
+    
+    if BASE_DIR:
+        SQLITE3_CONECTION = sqlite3.connect(os.path.join(BASE_DIR, 'data', 'final_doorcodes.db'))   
+    else:
+        SQLITE3_CONECTION = sqlite3.connect(full_file_path)   
 
     _add_calculate_distance_procedure()
 

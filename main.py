@@ -13,16 +13,19 @@ from back.df_viewing_manager import make_md_text
 BASE_DIR = os.getcwd()
 TG_TOKEN = "5096267040:AAFa_d_YJHhVCxhw44xUlEqG_ypqTUSMcsg"
 
-CONFIG = get_config(BASE_DIR)
+CONFIG = get_config(full_file_path='/media/alex/drive_2tb/y_eda_tg_bot/misc/config.json')
 if CONFIG["data_source_type"] == 'db_file':
     from back.sqlite3_manager import sqlite3_manager_init, calculate_distance
-    sqlite3_manager_init(BASE_DIR)
+    sqlite3_manager_init(full_file_path='/media/alex/drive_2tb/y_eda_tg_bot/data/final_doorcodes.db')
 
 elif CONFIG["data_source_type"] == 'postgresql':
     from back.postgresql_manager import calculate_distance
 
 
-log_init(os.path.join(BASE_DIR, "misc", "log.txt"))
+log_init(
+    '/media/alex/drive_2tb/y_eda_tg_bot/misc/log.txt'
+    # os.path.join(BASE_DIR, "misc", "log.txt")
+)
 
 bot = Bot(token=TG_TOKEN)
 dp = Dispatcher(bot)

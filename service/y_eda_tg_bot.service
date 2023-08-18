@@ -1,0 +1,17 @@
+[Unit]
+Description=y_eda_tg_bot
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+Restart=always
+User=alex
+ExecStart=/usr/bin/python3 /media/alex/drive_2tb/y_eda_tg_bot/main.py
+Restart=always
+RestartSec=3
+StandardOutput=journal+console
+
+
+[Install]
+WantedBy=basic.target
