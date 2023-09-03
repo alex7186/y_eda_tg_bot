@@ -12,7 +12,6 @@ def make_md_text(input_df: pd.DataFrame) -> str:
             row["address_street"],
             row["address_house"],
             row["address_entrance"],
-
         )
 
         # printing domophone codes
@@ -33,5 +32,3 @@ def make_md_text(input_df: pd.DataFrame) -> str:
 #     input_df = input_df[input_df["distance"] > 0]
 
 #     return input_df["distance"].apply(lambda x: x*1000)
-
-

@@ -117,7 +117,7 @@ def _add_calculate_distance_procedure2():
 
     with POSTGRESQL_CONN.cursor() as cursor:
         cursor.execute(
-        """
+            """
         CREATE OR REPLACE FUNCTION calculate_distance(
             lat1 float, lon1 float, lat2 float, lon2 float, units varchar)
         RETURNS float AS $dist$

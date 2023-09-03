@@ -19,6 +19,10 @@ start-service:
 status-service:
 	-@sudo systemctl status $(app_name).service
 
+stop-service:
+	-@sudo systemctl stop $(app_name).service
+	@echo "\n stopped "
+
 cat-service:
 	@systemctl cat $(app_name)
 
