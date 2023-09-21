@@ -1,9 +1,10 @@
 import json
+import os
 
 
-def get_config(SCRIPT_PATH=None, full_file_path=None):
+def get_config(BASE_DIR=None, full_file_path=None):
     if not full_file_path:
-        PATH = f"{SCRIPT_PATH}/misc/config.json"
+        PATH = os.path.join(BASE_DIR, "misc", "config.json")
     else:
         PATH = full_file_path
     with open(PATH, "r") as f:
@@ -11,9 +12,9 @@ def get_config(SCRIPT_PATH=None, full_file_path=None):
     return json.loads(data)
 
 
-def set_config(config: dict, SCRIPT_PATH=None, full_file_path=None):
+def set_config(config: dict, BASE_DIR=None, full_file_path=None):
     if not full_file_path:
-        PATH = f"{SCRIPT_PATH}/misc/config.json"
+        PATH = os.path.join(BASE_DIR, "misc", "config.json")
     else:
         PATH = full_file_path
     with open(PATH, "w") as f:

@@ -103,3 +103,46 @@ def _add_calculate_distance_procedure():
         return dist
 
     SQLITE3_CONECTION.create_function("calculate_distance", 4, _calculate_distance)
+
+
+def read_logs_stat(n_max: int = 10):
+    global SQLITE3_CONECTION
+
+    cursor = SQLITE3_CONECTION.cursor()
+    cursor.execute(
+        """
+        select * from users_log
+        order by date DESC
+        limit {}
+        """.format(
+            n_max
+        )
+    )
+
+    result = DataFrame(
+        cursor.fetchall(),
+        columns=(
+            "date",
+            "user_tg_id",
+            "longitude",
+            "latitude",
+        ),
+    )
+    cursor.close()
+
+    return result
+
+def clear_self_logs():
+    global SQLITE3_CONECTION
+
+    cursor = SQLITE3_CONECTION.cursor()
+    cursor.execute(
+        """
+        delete from users_log
+        where user_tg_id = 747558089
+        """
+    )
+
+    SQLITE3_CONECTION.commit()
+    cursor.close()
+
