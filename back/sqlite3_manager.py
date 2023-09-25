@@ -132,6 +132,7 @@ def read_logs_stat(n_max: int = 10):
 
     return result
 
+
 def clear_self_logs():
     global SQLITE3_CONECTION
 
@@ -145,4 +146,3 @@ def clear_self_logs():
 
     SQLITE3_CONECTION.commit()
     cursor.close()
-

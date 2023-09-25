@@ -44,7 +44,7 @@ async def cmd_locate_me(message: Message):
 
 
 event_handlers_registry = [
-    # {"function": show_start, "commands": None, "content_types": None},
+    {"function": show_start, "commands": None, "content_types": None},
     {"function": user_sends_location, "commands": ["locate_me"], "content_types": None},
     {"function": cmd_locate_me, "commands": None, "content_types": ["location"]},
 ]

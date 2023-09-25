@@ -1,13 +1,19 @@
+import os
 import logging
 
 LOG_INITIALIZED = False
 
 
-def log_init(log_file):
-    # f"/home/pi/scripts/weather_bot/misc/logfile.txt"
+def log_init(BASE_DIR=None, full_file_path=None):
+
+    file_path = None
+
+    file_path = (
+        os.path.join(BASE_DIR, "misc", "logfile.txt") if BASE_DIR else full_file_path
+    )
 
     logging.basicConfig(
-        filename=log_file,
+        filename=file_path,
         filemode="a",
         format="%(asctime)s %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
@@ -18,7 +24,6 @@ def log_init(log_file):
 def mprint(message: str) -> None:
     """it's like usual 'print' but with logging"""
     try:
-        # print(message)
         logging.info(message)
 
     except Exception as e:

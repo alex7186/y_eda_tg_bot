@@ -3,7 +3,7 @@ import os
 
 
 def get_config(BASE_DIR=None, full_file_path=None):
-    if not full_file_path:
+    if BASE_DIR:
         PATH = os.path.join(BASE_DIR, "misc", "config.json")
     else:
         PATH = full_file_path
@@ -13,7 +13,7 @@ def get_config(BASE_DIR=None, full_file_path=None):
 
 
 def set_config(config: dict, BASE_DIR=None, full_file_path=None):
-    if not full_file_path:
+    if BASE_DIR:
         PATH = os.path.join(BASE_DIR, "misc", "config.json")
     else:
         PATH = full_file_path
