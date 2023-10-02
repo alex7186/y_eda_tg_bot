@@ -6,15 +6,15 @@ from aiogram.utils import executor
 
 from back.config_manager import get_config
 from back.sqlite3_manager import sqlite3_manager_init
-from back.log_manager import log_init
+from back.log_manager import log_init, mprint
 
 from back.tg_items.message_handlers import event_handlers_registry
 
 
-BASE_DIR = os.getcwd()
+# BASE_DIR = os.getcwd()
+BASE_DIR = os.path.abspath('/media/alex/drive_2tb/y_eda_tg_bot')
 CONFIG = get_config(BASE_DIR=BASE_DIR)
 SECRETS = get_config(full_file_path=os.path.join(BASE_DIR, "misc", "secrets.json"))
-
 
 bot = Bot(token=SECRETS["TG_TOKEN"])
 dp = Dispatcher(bot)
@@ -25,7 +25,7 @@ event_handler_list = []
 sqlite3_manager_init(BASE_DIR=BASE_DIR)
 log_init(BASE_DIR=BASE_DIR)
 
-
+mprint(BASE_DIR)
 if int(CONFIG["SECURITY"]) == 1:
     from PIL import Image, ImageFont
 
