@@ -15,7 +15,9 @@ async def show_start(message: Message):
 
 async def user_sends_location(message: Message):
     reply = "Нажмите на кнопку ниже чтобы поделиться своей геолокацией"
-    await message.answer(reply, reply_markup=generate_keyboard(share_location_button))
+    await message.answer(
+        reply, reply_markup=generate_keyboard(share_location_button,)
+    )
 
 
 async def cmd_locate_me(message: Message):
@@ -36,7 +38,7 @@ async def cmd_locate_me(message: Message):
                     result_count=10,
                 )
             ),
-            reply_markup=generate_keyboard(share_location_button),
+            reply_markup=generate_keyboard(share_location_button,),
         )
 
     except exceptions.MessageTextIsEmpty:

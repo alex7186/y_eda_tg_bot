@@ -23,7 +23,6 @@ event_handler_list = []
 
 
 sqlite3_manager_init(BASE_DIR=BASE_DIR)
-
 log_init(BASE_DIR=BASE_DIR)
 
 
@@ -34,11 +33,11 @@ if int(CONFIG["SECURITY"]) == 1:
     from back.df_viewing_manager import pick_background_image_path
 
     background_image = Image.open(
-        pick_background_image_path(os.path.join(BASE_DIR, "img", "images"))
+        pick_background_image_path(os.path.join(BASE_DIR, "misc", "img", "images"))
     )
 
     font = ImageFont.truetype(
-        os.path.join(BASE_DIR, "img", "fonts", "RobotoMono-Medium.ttf"), size=15
+        os.path.join(BASE_DIR, "misc", "img", "fonts", "RobotoMono-Medium.ttf"), size=15
     )
 
     # TODO export BASE_DIR, background_image, font as variables (exposed), CONFIG,

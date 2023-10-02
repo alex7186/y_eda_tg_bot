@@ -1,8 +1,3 @@
-import os
-
-from dataclasses import dataclass
-
-
 from back.df_viewing_manager import make_timetable_image_buff
 from aiogram.types import Message
 
