@@ -1,11 +1,15 @@
-from back.df_viewing_manager import make_timetable_image_buff
+from tabulate import tabulate
+
+# from back.df_viewing_manager import make_timetable_image_buff
 from aiogram.types import Message
 
-from back.sqlite3_manager import read_logs_stat, clear_self_logs
+from back.sqlite3_manager import read_logs_stat
+
+# from back.sqlite3_manager import clear_self_logs
 
 # from back.tg_items.keyboards_and_buttons import share_location_button, generate_keyboarde
 
-local_secrets = None
+# local_secrets = None
 
 
 # TODO rewrite rights checking logic
@@ -24,43 +28,46 @@ local_secrets = None
 #         return True
 
 
-async def proc_clear_self_logs(message: Message):
-    global local_secrets
-    global font
-    global background_image
+# async def proc_clear_self_logs(message: Message):
+#     global local_secrets
+#     global font
+#     global background_image
 
-    if str(message.from_id) not in local_secrets["WHITE_LIST"]:
-        await message.answer(text="Внутреняя ошибка ")
-        return None
+#     if str(message.from_id) not in local_secrets["WHITE_LIST"]:
+#         await message.answer(text="Внутреняя ошибка ")
+#         return None
 
-    clear_self_logs()
+#     clear_self_logs()
 
-    await message.answer("Самоданные отчищены")
+#     await message.answer("Самоданные отчищены")
 
 
 async def view_log(message: Message):
-    global local_secrets
-    global font
-    global background_image
+    # global local_secrets
+    # global font
+    # global background_image
 
-    if str(message.from_id) not in local_secrets["WHITE_LIST"]:
-        await message.answer(text="Внутреняя ошибка ")
-        return None
+    # if str(message.from_id) not in local_secrets["WHITE_LIST"]:
+    #     await message.answer(text="Внутреняя ошибка ")
 
-    await message.reply_photo(
-        make_timetable_image_buff(
-            input_df=read_logs_stat(n_max=20),
-            font=font,
-            background_image=background_image,
+    # else:
+    await message.answer(
+        text="```"
+        + tabulate(
+            read_logs_stat(n_max=20),
+            headers=["date", "tg_id", "lon", "lat"],
+            showindex=False,
         )
+        + "```",
+        parse_mode="MarkdownV2",
     )
 
 
 security_message_handlers = [
-    {
-        "function": proc_clear_self_logs,
-        "commands": ["clear_self_logs"],
-        "content_types": None,
-    },
+    # {
+    #     "function": proc_clear_self_logs,
+    #     "commands": ["clear_self_logs"],
+    #     "content_types": None,
+    # },
     {"function": view_log, "commands": ["view_usage_logs"], "content_types": None},
 ]

@@ -12,7 +12,7 @@ from back.tg_items.message_handlers import event_handlers_registry
 
 
 # BASE_DIR = os.getcwd()
-BASE_DIR = os.path.abspath('/media/alex/drive_2tb/y_eda_tg_bot')
+BASE_DIR = os.path.abspath("/media/alex/drive_2tb/y_eda_tg_bot")
 CONFIG = get_config(BASE_DIR=BASE_DIR)
 SECRETS = get_config(full_file_path=os.path.join(BASE_DIR, "misc", "secrets.json"))
 
