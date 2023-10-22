@@ -1,15 +1,10 @@
+import os
 from tabulate import tabulate
 
-# from back.df_viewing_manager import make_timetable_image_buff
 from aiogram.types import Message
 
-from back.sqlite3_manager import read_logs_stat
-
-# from back.sqlite3_manager import clear_self_logs
-
-# from back.tg_items.keyboards_and_buttons import share_location_button, generate_keyboarde
-
-# local_secrets = None
+from back.sqlite3_manager import read_logs_stat, clear_self_logs
+from back.tg_items.keyboards_and_buttons import reply_markup_keyboard
 
 
 # TODO rewrite rights checking logic
@@ -28,46 +23,31 @@ from back.sqlite3_manager import read_logs_stat
 #         return True
 
 
-# async def proc_clear_self_logs(message: Message):
-#     global local_secrets
-#     global font
-#     global background_image
-
-#     if str(message.from_id) not in local_secrets["WHITE_LIST"]:
-#         await message.answer(text="Внутреняя ошибка ")
-#         return None
-
-#     clear_self_logs()
-
-#     await message.answer("Самоданные отчищены")
+ADMIN_TG_ID = os.environ.get("ADMIN_TG_ID")
 
 
 async def view_log(message: Message):
-    # global local_secrets
-    # global font
-    # global background_image
+    global ADMIN_TG_ID
 
-    # if str(message.from_id) not in local_secrets["WHITE_LIST"]:
-    #     await message.answer(text="Внутреняя ошибка ")
+    if str(message.from_id) != ADMIN_TG_ID and False:
+        await message.answer(text="Внутреняя ошибка ")
+        return None
 
-    # else:
+    clear_self_logs()
+
     await message.answer(
-        text="```"
-        + tabulate(
+        text=tabulate(
             read_logs_stat(n_max=20),
-            headers=["date", "tg_id", "lon", "lat"],
-            showindex=False,
-        )
-        + "```",
+            # headers=["date", "tg_id", "geo"],
+            headers="keys",
+        ),
         parse_mode="MarkdownV2",
+        disable_web_page_preview=True,
+        reply_markup=reply_markup_keyboard,
     )
 
 
 security_message_handlers = [
-    # {
-    #     "function": proc_clear_self_logs,
-    #     "commands": ["clear_self_logs"],
-    #     "content_types": None,
-    # },
-    {"function": view_log, "commands": ["view_usage_logs"], "content_types": None},
+    # {"function": view_log, "commands": ["view_usage_logs"], "content_types": None},
+    {"function": view_log, "commands": None, "content_types": None},
 ]

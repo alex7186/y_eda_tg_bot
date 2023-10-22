@@ -1,20 +1,36 @@
 import os
+import pathlib
+
 
 from aiogram import Bot
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 
-from back.config_manager import get_config
-from back.sqlite3_manager import sqlite3_manager_init
-from back.log_manager import log_init, mprint
+BASE_DIR = pathlib.Path(__file__).parent.resolve()
+os.environ["BASE_DIR"] = str(BASE_DIR)
 
+from back.config_manager import get_config
+
+from back.tg_items.keyboards_and_buttons import (
+    set_reply_markup_keyboard,
+    generate_keyboard,
+    share_location_button,
+    view_log_button,
+)
+
+set_reply_markup_keyboard(generate_keyboard(share_location_button, view_log_button))
+
+from back.tg_items.security_layer import security_message_handlers
 from back.tg_items.message_handlers import event_handlers_registry
 
 
-# BASE_DIR = os.getcwd()
-BASE_DIR = os.path.abspath("/media/alex/drive_2tb/y_eda_tg_bot")
-CONFIG = get_config(BASE_DIR=BASE_DIR)
+CONFIG = get_config()
 SECRETS = get_config(full_file_path=os.path.join(BASE_DIR, "misc", "secrets.json"))
+ADMIN_TG_ID = SECRETS.get("ADMIN_TG_ID")
+os.environ["ADMIN_TG_ID"] = ADMIN_TG_ID
+
+print()
+
 
 bot = Bot(token=SECRETS["TG_TOKEN"])
 dp = Dispatcher(bot)
@@ -22,31 +38,7 @@ dp = Dispatcher(bot)
 event_handler_list = []
 
 
-sqlite3_manager_init(BASE_DIR=BASE_DIR)
-log_init(BASE_DIR=BASE_DIR)
-
-mprint(BASE_DIR)
-if int(CONFIG["SECURITY"]) == 1:
-    from PIL import Image, ImageFont
-
-    from back.tg_items.security_layer import security_message_handlers
-    from back.df_viewing_manager import pick_background_image_path
-
-    background_image = Image.open(
-        pick_background_image_path(os.path.join(BASE_DIR, "misc", "img", "images"))
-    )
-
-    font = ImageFont.truetype(
-        os.path.join(BASE_DIR, "misc", "img", "fonts", "RobotoMono-Medium.ttf"), size=15
-    )
-
-    # TODO export BASE_DIR, background_image, font as variables (exposed), CONFIG,
-    # TODO rename background_image, font vars
-
-
-if int(CONFIG["SECURITY"]) == 1:
-    event_handler_list += security_message_handlers
-
+event_handler_list += security_message_handlers
 event_handler_list += event_handlers_registry
 
 for event_handler_item in event_handler_list:

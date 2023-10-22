@@ -2,3 +2,4 @@ __pycache__
 hint_files
 secrets.json
 logfile.txt
+.vscode

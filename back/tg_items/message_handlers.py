@@ -5,7 +5,7 @@ from aiogram.utils import exceptions
 
 from back.sqlite3_manager import calculate_distance, add_log
 from back.df_viewing_manager import make_md_text
-from back.tg_items.keyboards_and_buttons import share_location_button, generate_keyboard
+from back.tg_items.keyboards_and_buttons import reply_markup_keyboard
 
 
 async def show_start(message: Message):
@@ -14,16 +14,16 @@ async def show_start(message: Message):
 
 
 async def user_sends_location(message: Message):
-    reply = "Нажмите на кнопку ниже чтобы поделиться своей геолокацией"
+    global reply_markup_keyboard
+
     await message.answer(
-        reply,
-        reply_markup=generate_keyboard(
-            share_location_button,
-        ),
+        "Нажмите на кнопку ниже чтобы поделиться своей геолокацией",
+        reply_markup=reply_markup_keyboard,
     )
 
 
 async def cmd_locate_me(message: Message):
+    global reply_markup_keyboard
 
     add_log(
         date_str=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -41,9 +41,7 @@ async def cmd_locate_me(message: Message):
                     result_count=10,
                 )
             ),
-            reply_markup=generate_keyboard(
-                share_location_button,
-            ),
+            reply_markup=reply_markup_keyboard,
         )
 
     except exceptions.MessageTextIsEmpty:

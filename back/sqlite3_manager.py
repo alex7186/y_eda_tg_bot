@@ -2,29 +2,15 @@ from pandas import DataFrame
 import sqlite3
 import os
 from math import pi, sin, cos, atan2
+from datetime import datetime
 
-SQLITE3_CONECTION = None
-
-
-def sqlite3_manager_init(BASE_DIR=None, full_file_path=None):
-    global SQLITE3_CONECTION
-
-    if BASE_DIR:
-        SQLITE3_CONECTION = sqlite3.connect(
-            os.path.join(BASE_DIR, "data", "final_doorcodes.db")
-        )
-    else:
-        SQLITE3_CONECTION = sqlite3.connect(full_file_path)
-
-    _add_calculate_distance_procedure()
-
-    return SQLITE3_CONECTION
+SQLITE3_CONNECTION = None
 
 
 def calculate_distance(lat: float, lon: float, result_count: int = 10) -> DataFrame:
-    global SQLITE3_CONECTION
+    global SQLITE3_CONNECTION
 
-    cursor = SQLITE3_CONECTION.cursor()
+    cursor = SQLITE3_CONNECTION.cursor()
     cursor.execute(
         """
         select 
@@ -68,9 +54,9 @@ def add_log(
     date_str: str, user_tg_id: str, location_longitude: float, location_latitude: float
 ):
 
-    global SQLITE3_CONECTION
+    global SQLITE3_CONNECTION
 
-    cursor = SQLITE3_CONECTION.cursor()
+    cursor = SQLITE3_CONNECTION.cursor()
 
     cursor.execute(
         """
@@ -81,12 +67,12 @@ def add_log(
         )
     )
 
-    SQLITE3_CONECTION.commit()
+    SQLITE3_CONNECTION.commit()
     cursor.close()
 
 
 def _add_calculate_distance_procedure():
-    global SQLITE3_CONECTION
+    global SQLITE3_CONNECTION
 
     def _calculate_distance(
         lat1: float, lon1: float, lat2: float, lon2: float
@@ -102,13 +88,13 @@ def _add_calculate_distance_procedure():
 
         return dist
 
-    SQLITE3_CONECTION.create_function("calculate_distance", 4, _calculate_distance)
+    SQLITE3_CONNECTION.create_function("calculate_distance", 4, _calculate_distance)
 
 
 def read_logs_stat(n_max: int = 10):
-    global SQLITE3_CONECTION
+    global SQLITE3_CONNECTION
 
-    cursor = SQLITE3_CONECTION.cursor()
+    cursor = SQLITE3_CONNECTION.cursor()
     cursor.execute(
         """
         select * from users_log
@@ -130,13 +116,21 @@ def read_logs_stat(n_max: int = 10):
     )
     cursor.close()
 
-    return result
+    result["date"] = result["date"].apply(
+        lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S").strftime("%H:%M %d.%m.%y")
+    )
+
+    result["geo"] = result[["latitude", "longitude"]].apply(
+        lambda x: f"https://www.google.com/search?channel=fs&q={x[0]}+{x[1]}", axis=1
+    )
+
+    return result[["date", "user_tg_id", "geo"]]
 
 
 def clear_self_logs():
-    global SQLITE3_CONECTION
+    global SQLITE3_CONNECTION
 
-    cursor = SQLITE3_CONECTION.cursor()
+    cursor = SQLITE3_CONNECTION.cursor()
     cursor.execute(
         """
         delete from users_log
@@ -144,5 +138,13 @@ def clear_self_logs():
         """
     )
 
-    SQLITE3_CONECTION.commit()
+    SQLITE3_CONNECTION.commit()
     cursor.close()
+
+
+if __name__ != "__main__":
+
+    SQLITE3_CONNECTION = sqlite3.connect(
+        os.path.join(os.environ.get("BASE_DIR"), "data", "final_door_codes.db")
+    )
+    _add_calculate_distance_procedure()
