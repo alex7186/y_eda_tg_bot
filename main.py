@@ -4,7 +4,7 @@ import pathlib
 
 from aiogram import Bot
 from aiogram.dispatcher import Dispatcher
-from aiogram.utils import executor
+from aiogram.utils import executor, exceptions
 
 BASE_DIR = pathlib.Path(__file__).parent.resolve()
 os.environ["BASE_DIR"] = str(BASE_DIR)
@@ -50,4 +50,7 @@ for event_handler_item in event_handler_list:
 
 
 if __name__ == "__main__":
-    executor.start_polling(dp, skip_updates=True)
+    try:
+        executor.start_polling(dp, skip_updates=True)
+    except exceptions.TerminatedByOtherGetUpdates:
+        pass
